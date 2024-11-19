@@ -841,9 +841,11 @@ class RWCTesterApi(RwcSerialSetup):
         '''
         Configure the data rate of ping channel
 
-        :param drvalue: DR0_SF12BW125, DR1_SF11BW125, DR2_SF10BW125, 
-                        DR3_SF9BW125, DR4_SF8BW125, DR5_SF7BW125, 
-                        DR6_SF7BW250, DR7_FSK50
+        :param drvalue: DR0_SF12BW125, DR1_SF11BW125, DR2_SF10BW125,
+                        DR3_SF9BW125, DR4_SF8BW125, DR5_SF7BW125,
+                        DR6_SF7BW250, DR7_FSK50, DR8_SF12BW500,
+                        DR9_SF11BW500, DR10_SF10BW500, DR11_SF9BW500,
+                        DR12_SF8BW500, DR13_SF7BW500
 
         :return: ACK on success, NAK on failure
         
@@ -856,7 +858,14 @@ class RWCTesterApi(RwcSerialSetup):
             'DR4_SF8BW125',
             'DR5_SF7BW125',
             'DR6_SF7BW250',
-            'DR7_FSK50']
+            'DR7_FSK50',
+            'DR8_SF12BW500',
+            'DR9_SF11BW500',
+            'DR10_SF10BW500',
+            'DR11_SF9BW500',
+            'DR12_SF8BW500',
+            'DR13_SF7BW500'
+            ]
         if drvalue in drvallist:
             cmdSetPingDr = 'CONF:RF:PING_DR ' + drvalue + '\n'
             result = RwcSerialSetup.transceive(self, cmdSetPingDr)
@@ -917,9 +926,11 @@ class RWCTesterApi(RwcSerialSetup):
         '''
         Configure the data rate of beacon
 
-        :param drvalue: DR0_SF12BW125, DR1_SF11BW125, DR2_SF10BW125, 
-                        DR3_SF9BW125, DR4_SF8BW125, DR5_SF7BW125, 
-                        DR6_SF7BW250, DR7_FSK50
+        :param drvalue: DR0_SF12BW125, DR1_SF11BW125, DR2_SF10BW125,
+                        DR3_SF9BW125, DR4_SF8BW125, DR5_SF7BW125,
+                        DR6_SF7BW250, DR7_FSK50, DR8_SF12BW500,
+                        DR9_SF11BW500, DR10_SF10BW500, DR11_SF9BW500,
+                        DR12_SF8BW500, DR13_SF7BW500
 
         :return: ACK on success, NAK on failure
         
@@ -932,7 +943,14 @@ class RWCTesterApi(RwcSerialSetup):
             'DR4_SF8BW125',
             'DR5_SF7BW125',
             'DR6_SF7BW250',
-            'DR7_FSK50']
+            'DR7_FSK50',
+            'DR8_SF12BW500',
+            'DR9_SF11BW500',
+            'DR10_SF10BW500',
+            'DR11_SF9BW500',
+            'DR12_SF8BW500',
+            'DR13_SF7BW500'
+            ]
         if drvalue in drvallist:
             cmdSetBeaconDr = 'CONF:RF:BEACON_DR ' + drvalue + '\n'
             result = RwcSerialSetup.transceive(self, cmdSetBeaconDr)
@@ -2365,9 +2383,11 @@ class RWCTesterApi(RwcSerialSetup):
                    DR_0, DR_1, DR_2, DR_3, DR_4, DR_5, DR_6, DR_7
 
                    For S/W Version 1.170 - 1.305:
-                   DR0_SF12BW125, DR1_SF11BW125, DR2_SF10BW125, 
-                   DR3_SF9BW125, DR4_SF8BW125, DR5_SF7BW125, 
-                   DR6_SF7BW250, DR7_FSK50
+                   DR0_SF10BW125, DR0_SF12BW125, DR1_SF9BW125,
+                   DR1_SF11BW125, DR2_SF8BW125, DR2_SF10BW125,
+                   DR3_SF7BW125, DR3_SF9BW125, DR4_SF8BW125,
+                   DR4_SF8BW500, DR5_SF7BW125, DR6_SF7BW250,
+                   DR7_FSK50
 
         :return: ACK on success, NAK on failure
         
@@ -2382,17 +2402,22 @@ class RWCTesterApi(RwcSerialSetup):
             'DR_0', 'DR_1', 'DR_2', 'DR_3', 
             'DR_4', 'DR_5', 'DR_6', 'DR_7']
         drList2 = [
-            'DR0_SF12BW125', 'DR1_SF11BW125', 
-            'DR2_SF10BW125', 'DR3_SF9BW125', 
-            'DR4_SF8BW125', 'DR5_SF7BW125', 
-            'DR6_SF7BW250', 'DR7_FSK50']
+            'DR0_SF10BW125', 'DR0_SF12BW125',
+            'DR1_SF9BW125', 'DR1_SF11BW125',
+            'DR2_SF8BW125', 'DR2_SF10BW125',
+            'DR3_SF7BW125', 'DR3_SF9BW125',
+            'DR4_SF8BW125', 'DR4_SF8BW500',
+            'DR5_SF7BW125', 'DR6_SF7BW250',
+            'DR7_FSK50']
         swVersion = self.query_sysversion()
+        swVersionNum = float(swVersion)
 
         if swVersion in verList1 and dr in drList1:
             cmdSetUplinkDr = 'CONF:PROTOCOL:UPLINK_DR ' + dr + '\n'
             result = RwcSerialSetup.transceive(self, cmdSetUplinkDr)
             return result
-        elif swVersion in verList2 and dr in drList2:
+        elif (swVersion in verList2 and dr in drList2) or \
+             (swVersionNum >= 1.517 and dr in drList2):
             cmdSetUplinkDr = 'CONF:PROTOCOL:UPLINK_DR ' + dr + '\n'
             result = RwcSerialSetup.transceive(self, cmdSetUplinkDr)
             return result
@@ -2486,9 +2511,11 @@ class RWCTesterApi(RwcSerialSetup):
                    DR_0, DR_1, DR_2, DR_3, DR_4, DR_5, DR_6, DR_7
                    
                    For S/W Version 1.170 - 1.305:
-                   DR0_SF12BW125, DR1_SF11BW125, DR2_SF10BW125, 
-                   DR3_SF9BW125, DR4_SF8BW125, DR5_SF7BW125, 
-                   DR6_SF7BW250, DR7_FSK50
+                   DR0_SF12BW125, DR1_SF11BW125, DR2_SF10BW125,
+                   DR3_SF9BW125, DR4_SF8BW125, DR5_SF7BW125,
+                   DR6_SF7BW250, DR7_FSK50, DR8_SF12BW500,
+                   DR9_SF11BW500, DR10_SF10BW500, DR11_SF9BW500,
+                   DR12_SF8BW500, DR13_SF7BW500
 
         :return: ACK on success, NAK on failure
         
@@ -2502,17 +2529,23 @@ class RWCTesterApi(RwcSerialSetup):
             'DR_0', 'DR_1', 'DR_2', 'DR_3', 
             'DR_4', 'DR_5', 'DR_6', 'DR_7']
         drList2 = [
-            'DR0_SF12BW125', 'DR1_SF11BW125', 
-            'DR2_SF10BW125', 'DR3_SF9BW125', 
-            'DR4_SF8BW125', 'DR5_SF7BW125', 
-            'DR6_SF7BW250', 'DR7_FSK50']
+            'DR0_SF12BW125', 'DR1_SF11BW125',
+            'DR2_SF10BW125', 'DR3_SF9BW125',
+            'DR4_SF8BW125', 'DR5_SF7BW125',
+            'DR6_SF7BW250', 'DR7_FSK50',
+            'DR8_SF12BW500', 'DR9_SF11BW500',
+            'DR10_SF10BW500', 'DR11_SF9BW500',
+            'DR12_SF8BW500', 'DR13_SF7BW500'
+            ]
         swVersion = self.query_sysversion()
+        swVersionNum = float(swVersion)
 
         if swVersion in verList1 and dr in drList1:
             cmdSetRx2Dr = 'CONF:PROTOCOL:RX2_DR ' + dr + '\n'
             result = RwcSerialSetup.transceive(self, cmdSetRx2Dr)
             return result
-        elif swVersion in verList2 and dr in drList2:
+        elif (swVersion in verList2 and dr in drList2) or \
+             (swVersionNum >= 1.517 and dr in drList2):
             cmdSetRx2Dr = 'CONF:PROTOCOL:RX2_DR ' + dr + '\n'
             result = RwcSerialSetup.transceive(self, cmdSetRx2Dr)
             return result
@@ -3896,9 +3929,11 @@ class RWCTesterApi(RwcSerialSetup):
         Configure DR value for LinkADRReq
 
         :param macnum: MAC Command Number
-        :param drval: DR0_SF12BW125, DR1_SF11BW125, DR2_SF10BW125, 
-                      DR3_SF9BW125, DR4_SF8BW125, DR5_SF7BW125, 
-                      DR6_SF7BW250, DR7_FSK50
+        :param drval: DR0_SF10BW125, DR0_SF12BW125, DR1_SF9BW125,
+                      DR1_SF11BW125, DR2_SF8BW125, DR2_SF10BW125, 
+                      DR3_SF7BW125, DR3_SF9BW125, DR4_SF8BW500,
+                      DR4_SF8BW125, DR5_SF7BW125, DR6_SF7BW250,
+                      DR7_FSK50
 
         :return: ACK on success, NAK on failure
         
@@ -3908,13 +3943,18 @@ class RWCTesterApi(RwcSerialSetup):
         numVersion = float(cmdVersion)
         lowVersionDrvallist = [0, 1, 2, 3, 4, 5, 6, 7]
         drvallist = [
-            'DR0_SF12BW125', 
-            'DR1_SF11BW125', 
-            'DR2_SF10BW125', 
-            'DR3_SF9BW125', 
-            'DR4_SF8BW125', 
-            'DR5_SF7BW125', 
-            'DR6_SF7BW250', 
+            'DR0_SF10BW125',
+            'DR0_SF12BW125',
+            'DR1_SF9BW125',
+            'DR1_SF11BW125',
+            'DR2_SF8BW125',
+            'DR2_SF10BW125',
+            'DR3_SF7BW125',
+            'DR3_SF9BW125',
+            'DR4_SF8BW125',
+            'DR4_SF8BW500',
+            'DR5_SF7BW125',
+            'DR6_SF7BW250',
             'DR7_FSK50']
         
         if (cmdVersion == '1.150' 
@@ -4941,19 +4981,25 @@ class RWCTesterApi(RwcSerialSetup):
                       first parameter should be a MAC command number,
                       second parameter should be datarate
 
-                      (DR0_SF12BW125, DR1_SF11BW125, 
-                       DR2_SF10BW125, DR3_SF9BW125, 
-                       DR4_SF8BW125, DR5_SF7BW125, 
-                       DR6_SF7BW250, DR7_FSK50)
+                      (DR0_SF12BW125, DR1_SF11BW125,
+                       DR2_SF10BW125, DR3_SF9BW125,
+                       DR4_SF8BW125, DR5_SF7BW125,
+                       DR6_SF7BW250, DR7_FSK50,
+                       DR8_SF12BW500, DR9_SF11BW500,
+                       DR10_SF10BW500, DR11_SF9BW500,
+                       DR12_SF8BW500, DR13_SF7BW500)
 
         :return: ACK on success, NAK on failure
         
         '''
         drList = [
-            'DR0_SF12BW125', 'DR1_SF11BW125', 
-            'DR2_SF10BW125', 'DR3_SF9BW125', 
-            'DR4_SF8BW125', 'DR5_SF7BW125', 
-            'DR6_SF7BW250', 'DR7_FSK50']
+            'DR0_SF12BW125', 'DR1_SF11BW125',
+            'DR2_SF10BW125', 'DR3_SF9BW125',
+            'DR4_SF8BW125', 'DR5_SF7BW125',
+            'DR6_SF7BW250', 'DR7_FSK50',
+            'DR8_SF12BW500', 'DR9_SF11BW500',
+            'DR10_SF10BW500', 'DR11_SF9BW500',
+            'DR12_SF8BW500', 'DR13_SF7BW500']
 
         if len(args) == 1 and args[0] in drList:
             cmdDr = str(args[0])
@@ -5060,10 +5106,14 @@ class RWCTesterApi(RwcSerialSetup):
         Configure the Data Rate used for RX2 channel
 
         :param macnum: MAC Command Number
-        :param datarate: DR0_SF12BW125, DR1_SF11BW125, 
-                         DR2_SF10BW125, DR3_SF9BW125, 
-                         DR4_SF8BW125, DR5_SF7BW125, 
-                         DR6_SF7BW250, DR7_FSK50
+        :param datarate: DR0_SF12BW125, DR1_SF11BW125,
+                         DR2_SF10BW125, DR3_SF9BW125,
+                         DR4_SF8BW125, DR5_SF7BW125,
+                         DR6_SF7BW250, DR7_FSK50,
+                         DR8_SF12BW500, DR9_SF11BW500,
+                         DR10_SF10BW500, DR11_SF9BW500,
+                         DR12_SF8BW500, DR13_SF7BW500
+
 
         :return: ACK on success, NAK on failure
         
@@ -5108,6 +5158,36 @@ class RWCTesterApi(RwcSerialSetup):
         elif cmdRx2Dr == 'DR7_FSK50':
             cmdSetRx2Dr = 'CONF:LINK:RX2_DR ' \
                             + cmdMacNum + ' DR7_FSK50' + '\n'
+            result = RwcSerialSetup.transceive(self, cmdSetRx2Dr)
+            return result
+        elif cmdRx2Dr == 'DR8_SF12BW500':
+            cmdSetRx2Dr = 'CONF:LINK:RX2_DR ' \
+                            + cmdMacNum + ' DR8_SF12BW500' + '\n'
+            result = RwcSerialSetup.transceive(self, cmdSetRx2Dr)
+            return result
+        elif cmdRx2Dr == 'DR9_SF11BW500':
+            cmdSetRx2Dr = 'CONF:LINK:RX2_DR ' \
+                            + cmdMacNum + ' DR9_SF11BW500' + '\n'
+            result = RwcSerialSetup.transceive(self, cmdSetRx2Dr)
+            return result
+        elif cmdRx2Dr == 'DR10_SF10BW500':
+            cmdSetRx2Dr = 'CONF:LINK:RX2_DR ' \
+                            + cmdMacNum + ' DR10_SF10BW500' + '\n'
+            result = RwcSerialSetup.transceive(self, cmdSetRx2Dr)
+            return result
+        elif cmdRx2Dr == 'DR11_SF9BW500':
+            cmdSetRx2Dr = 'CONF:LINK:RX2_DR ' \
+                            + cmdMacNum + ' DR11_SF9BW500' + '\n'
+            result = RwcSerialSetup.transceive(self, cmdSetRx2Dr)
+            return result
+        elif cmdRx2Dr == 'DR12_SF8BW500':
+            cmdSetRx2Dr = 'CONF:LINK:RX2_DR ' \
+                            + cmdMacNum + ' DR12_SF8BW500' + '\n'
+            result = RwcSerialSetup.transceive(self, cmdSetRx2Dr)
+            return result
+        elif cmdRx2Dr == 'DR13_SF7BW500':
+            cmdSetRx2Dr = 'CONF:LINK:RX2_DR ' \
+                            + cmdMacNum + ' DR13_SF7BW500' + '\n'
             result = RwcSerialSetup.transceive(self, cmdSetRx2Dr)
             return result
         else:
@@ -5239,10 +5319,13 @@ class RWCTesterApi(RwcSerialSetup):
         Configure the Data Rate value for ForceRejoinReq
 
         :param macnum: MAC Command Number
-        :param datarate: DR0_SF12BW125, DR1_SF11BW125, 
-                         DR2_SF10BW125, DR3_SF9BW125, 
-                         DR4_SF8BW125, DR5_SF7BW125, 
-                         DR6_SF7BW250, DR7_FSK50
+        :param datarate: DR0_SF10BW125, DR0_SF12BW125,
+                         DR1_SF9BW125, DR1_SF11BW125,
+                         DR2_SF8BW125, DR2_SF10BW125,
+                         DR3_SF7BW125, DR3_SF9BW125, 
+                         DR4_SF8BW125, DR4_SF8BW500,
+                         DR5_SF7BW125, DR6_SF7BW250,
+                         DR7_FSK50
 
         :return: ACK on success, NAK on failure
         
@@ -5254,10 +5337,13 @@ class RWCTesterApi(RwcSerialSetup):
             'DR_4', 'DR_5', 
             'DR_6']
         drList = [
-            'DR0_SF12BW125', 'DR1_SF11BW125', 
-            'DR2_SF10BW125', 'DR3_SF9BW125', 
-            'DR4_SF8BW125', 'DR5_SF7BW125', 
-            'DR6_SF7BW250', 'DR7_FSK50']
+            'DR0_SF10BW125', 'DR0_SF12BW125',
+            'DR1_SF9BW125', 'DR1_SF11BW125',
+            'DR2_SF8BW125', 'DR2_SF10BW125',
+            'DR3_SF7BW125', 'DR3_SF9BW125',
+            'DR4_SF8BW125', 'DR4_SF8BW500',
+            'DR5_SF7BW125', 'DR6_SF7BW250',
+            'DR7_FSK50']
         cmdVersion = self.query_sysversion()
         numVersion = float(cmdVersion)
         
@@ -6787,23 +6873,33 @@ class RWCTesterApi(RwcSerialSetup):
         '''
         To configure multicast data rate for application layer
 
-        :param drval: 'DR0_SF12BW125', 'DR1_SF11BW125', 
-                      'DR2_SF10BW125', 'DR3_SF9BW125', 
-                      'DR4_SF8BW125', 'DR5_SF7BW125', 
-                      'DR6_SF7BW250', 'DR7_FSK50'
+        :param drval: 'DR0_SF12BW125', 'DR1_SF11BW125',
+                      'DR2_SF10BW125', 'DR3_SF9BW125',
+                      'DR4_SF8BW125', 'DR5_SF7BW125',
+                      'DR6_SF7BW250', 'DR7_FSK50',
+                      'DR8_SF12BW500', 'DR9_SF11BW500',
+                      'DR10_SF10BW500', 'DR11_SF9BW500',
+                      'DR12_SF8BW500', 'DR13_SF7BW500'
 
         :return: ACK on success, NAK on failure
 
         '''
         drlist = [
-            'DR0_SF12BW125', 
-            'DR1_SF11BW125', 
+            'DR0_SF12BW125',
+            'DR1_SF11BW125',
             'DR2_SF10BW125',
-            'DR3_SF9BW125', 
-            'DR4_SF8BW125', 
-            'DR5_SF7BW125', 
-            'DR6_SF7BW250', 
-            'DR7_FSK50']
+            'DR3_SF9BW125',
+            'DR4_SF8BW125',
+            'DR5_SF7BW125',
+            'DR6_SF7BW250',
+            'DR7_FSK50',
+            'DR8_SF12BW500',
+            'DR9_SF11BW500',
+            'DR10_SF10BW500',
+            'DR11_SF9BW500',
+            'DR12_SF8BW500',
+            'DR13_SF7BW500'
+            ]
         if drval in drlist:
             cmdSetMcDr = 'CONF:LINK:MC_DR ' + drval + '\n'
             result = RwcSerialSetup.transceive(self, cmdSetMcDr)
@@ -7619,24 +7715,42 @@ class RWCTesterApi(RwcSerialSetup):
         '''
         Configure the Data Rate to be used in power measure test
 
-        :param datarate: DR0_SF12BW125, DR1_SF11BW125, DR2_SF10BW125, 
-                         DR3_SF9BW125, DR4_SF8BW125, DR5_SF7BW125, 
-                         DR6_SF7BW250, DR7_FSK50
+        :param datarate: DR0_SF10BW125, DR0_SF12BW125, DR1_SF9BW125,
+                         DR1_SF11BW125, DR2_SF8BW125, DR2_SF10BW125,
+                         DR3_SF7BW125, DR3_SF9BW125, DR4_SF8BW125,
+                         DR4_SF8BW500, DR5_SF7BW125, DR6_SF7BW250,
+                         DR7_FSK50
 
         :return: ACK on success, NAK on failure
         
         '''
         cmdUlDr = datarate
-        if cmdUlDr == 'DR0_SF12BW125':
+        if cmdUlDr == 'DR0_SF10BW125':
+            cmdSetUlDr = 'CONF:POWER:UL_DR DR0_SF10BW125' + '\n'
+            result = RwcSerialSetup.transceive(self, cmdSetUlDr)
+            return result
+        elif cmdUlDr == 'DR0_SF12BW125':
             cmdSetUlDr = 'CONF:POWER:UL_DR DR0_SF12BW125' + '\n'
+            result = RwcSerialSetup.transceive(self, cmdSetUlDr)
+            return result
+        elif cmdUlDr == 'DR1_SF9BW125':
+            cmdSetUlDr = 'CONF:POWER:UL_DR DR1_SF9BW125' + '\n'
             result = RwcSerialSetup.transceive(self, cmdSetUlDr)
             return result
         elif cmdUlDr == 'DR1_SF11BW125':
             cmdSetUlDr = 'CONF:POWER:UL_DR DR1_SF11BW125' + '\n'
             result = RwcSerialSetup.transceive(self, cmdSetUlDr)
             return result
+        elif cmdUlDr == 'DR2_SF8BW125':
+            cmdSetUlDr = 'CONF:POWER:UL_DR DR2_SF8BW125' + '\n'
+            result = RwcSerialSetup.transceive(self, cmdSetUlDr)
+            return result
         elif cmdUlDr == 'DR2_SF10BW125':
             cmdSetUlDr = 'CONF:POWER:UL_DR DR2_SF10BW125' + '\n'
+            result = RwcSerialSetup.transceive(self, cmdSetUlDr)
+            return result
+        elif cmdUlDr == 'DR3_SF7BW125':
+            cmdSetUlDr = 'CONF:POWER:UL_DR DR3_SF7BW125' + '\n'
             result = RwcSerialSetup.transceive(self, cmdSetUlDr)
             return result
         elif cmdUlDr == 'DR3_SF9BW125':
@@ -7645,6 +7759,10 @@ class RWCTesterApi(RwcSerialSetup):
             return result
         elif cmdUlDr == 'DR4_SF8BW125':
             cmdSetUlDr = 'CONF:POWER:UL_DR DR4_SF8BW125' + '\n'
+            result = RwcSerialSetup.transceive(self, cmdSetUlDr)
+            return result
+        elif cmdUlDr == 'DR4_SF8BW500':
+            cmdSetUlDr = 'CONF:POWER:UL_DR DR4_SF8BW500' + '\n'
             result = RwcSerialSetup.transceive(self, cmdSetUlDr)
             return result
         elif cmdUlDr == 'DR5_SF7BW125':
@@ -8244,19 +8362,29 @@ class RWCTesterApi(RwcSerialSetup):
         '''
         Configure the DR value to be used in sensitivity test
 
-        :param drvalue: DR0_SF12BW125, DR1_SF11BW125, DR2_SF10BW125, 
-                        DR3_SF9BW125, DR4_SF8BW125, DR5_SF7BW125
+        :param drvalue: DR0_SF12BW125, DR1_SF11BW125,
+                        DR2_SF10BW125, DR3_SF9BW125,
+                        DR4_SF8BW125, DR5_SF7BW125,
+                        DR8_SF12BW500, DR9_SF11BW500,
+                        DR10_SF10BW500, DR11_SF9BW500,
+                        DR12_SF8BW500, DR13_SF7BW500
 
         :return: ACK on success, NAK on failure
         
         '''
         drvallist = [
-            'DR0_SF12BW125', 
-            'DR1_SF11BW125', 
-            'DR2_SF10BW125', 
-            'DR3_SF9BW125', 
-            'DR4_SF8BW125', 
-            'DR5_SF7BW125'
+            'DR0_SF12BW125',
+            'DR1_SF11BW125',
+            'DR2_SF10BW125',
+            'DR3_SF9BW125',
+            'DR4_SF8BW125',
+            'DR5_SF7BW125',
+            'DR8_SF12BW500',
+            'DR9_SF11BW500',
+            'DR10_SF10BW500',
+            'DR11_SF9BW500',
+            'DR12_SF8BW500',
+            'DR13_SF7BW500'
             ]
 
         if drvalue in drvallist:
