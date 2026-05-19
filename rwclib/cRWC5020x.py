@@ -6489,6 +6489,126 @@ class RWCTesterApi(RwcSerialSetup):
         else:
             raise Exception('Invalid malfunction parameter received.')
 
+    def link_setmalfunction_join_request(self, value):
+        '''
+        To configure join request malfunction activation
+
+        :param value: ON, OFF
+
+        :return: ACK on success, NAK on failure
+
+        '''
+        cmdValue = value
+        if (cmdValue == 'ON' or cmdValue == 'OFF'):
+            cmdSetMalfunction = 'CONF:LINK:NO_ANSWER_TO_JOIN_REQUEST ' + cmdValue + '\n'
+            result = RwcSerialSetup.transceive(self, cmdSetMalfunction)
+            return result
+        else:
+            raise Exception('Invalid malfunction parameter received.')
+
+    def link_getmalfunction_join_request(self):
+        '''
+        To read join request malfunction activation
+
+        :Parameters: N/A (Query only)
+
+        :return: join request malfunction status, NAK on failure
+
+        '''
+        cmdGetMalfunction = 'READ:LINK:NO_ANSWER_TO_JOIN_REQUEST?' + '\n'
+        result = RwcSerialSetup.transceive(self, cmdGetMalfunction)
+        return result
+
+    def link_setmalfunction_mac_command(self, value):
+        '''
+        To configure mac command malfunction activation
+
+        :param value: ON, OFF
+
+        :return: ACK on success, NAK on failure
+
+        '''
+        cmdValue = value
+        if (cmdValue == 'ON' or cmdValue == 'OFF'):
+            cmdSetMalfunction = 'CONF:LINK:NO_ANSWER_TO_MAC_COMMAND ' + cmdValue + '\n'
+            result = RwcSerialSetup.transceive(self, cmdSetMalfunction)
+            return result
+        else:
+            raise Exception('Invalid malfunction parameter received.')
+
+    def link_getmalfunction_mac_command(self):
+        '''
+        To read mac command malfunction activation
+
+        :Parameters: N/A (Query only)
+
+        :return: mac command malfunction status, NAK on failure
+
+        '''
+        cmdGetMalfunction = 'READ:LINK:NO_ANSWER_TO_MAC_COMMAND?' + '\n'
+        result = RwcSerialSetup.transceive(self, cmdGetMalfunction)
+        return result
+
+    def link_setmalfunction_confirmed_up(self, value):
+        '''
+        To configure confirmed up malfunction activation
+
+        :param value: ON, OFF
+
+        :return: ACK on success, NAK on failure
+
+        '''
+        cmdValue = value
+        if (cmdValue == 'ON' or cmdValue == 'OFF'):
+            cmdSetMalfunction = 'CONF:LINK:NO_ANSWER_TO_CONFIRMED_UP ' + cmdValue + '\n'
+            result = RwcSerialSetup.transceive(self, cmdSetMalfunction)
+            return result
+        else:
+            raise Exception('Invalid malfunction parameter received.')
+
+    def link_getmalfunction_confirmed_up(self):
+        '''
+        To read confirmed up malfunction activation
+
+        :Parameters: N/A (Query only)
+
+        :return: confirmed up malfunction status, NAK on failure
+
+        '''
+        cmdGetMalfunction = 'READ:LINK:NO_ANSWER_TO_CONFIRMED_UP?' + '\n'
+        result = RwcSerialSetup.transceive(self, cmdGetMalfunction)
+        return result
+
+    def link_setmalfunction_app_command(self, value):
+        '''
+        To configure app command malfunction activation
+
+        :param value: ON, OFF
+
+        :return: ACK on success, NAK on failure
+
+        '''
+        cmdValue = value
+        if (cmdValue == 'ON' or cmdValue == 'OFF'):
+            cmdSetMalfunction = 'CONF:LINK:NO_ANSWER_TO_APP_COMMAND ' + cmdValue + '\n'
+            result = RwcSerialSetup.transceive(self, cmdSetMalfunction)
+            return result
+        else:
+            raise Exception('Invalid malfunction parameter received.')
+
+    def link_getmalfunction_app_command(self):
+        '''
+        To read app command malfunction activation
+
+        :Parameters: N/A (Query only)
+
+        :return: app command malfunction status, NAK on failure
+
+        '''
+        cmdGetMalfunction = 'READ:LINK:NO_ANSWER_TO_APP_COMMAND?' + '\n'
+        result = RwcSerialSetup.transceive(self, cmdGetMalfunction)
+        return result
+
     def link_getmalfunction(self):
         '''
         To read malfunction activation
