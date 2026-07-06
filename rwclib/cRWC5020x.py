@@ -3610,19 +3610,30 @@ class RWCTesterApi(RwcSerialSetup):
         '''
         Configure the time out of MAC Answer after sending MAC Command
 
-        :param value: 1 ~ 100
+        :param value: For S/W versions < 1.220 : 600
+                      For S/W versions >= 1.220 < 1.602: 6000
+                      For S/W versions >= 1.602 : 172800
 
         :return: ACK on success, NAK on failure
         
         '''
-        
-        if (value >= 1) and (value <= 100):
+        swVersion = self.query_sysversion()
+        swVersionNum = float(swVersion)
+
+        if swVersionNum < 1.220:
+            maxLimit = 600
+        elif swVersionNum < 1.602:
+            maxLimit = 6000
+        else:
+            maxLimit = 172800
+
+        if (value >= 1) and (value <= maxLimit):
             cmdValue = str(value)
             cmdSetMacAnsTo = 'CONF:LINK:MAC_ANS_TO ' + cmdValue + '\n'
             result = RwcSerialSetup.transceive(self, cmdSetMacAnsTo)
             return result
         else:
-            raise Exception('Invalid parameter received.')
+            raise Exception(f'Value out of range for firmware {swVersion}: max {maxLimit}s')
 
     def link_getmacanstimeout(self):
         '''
